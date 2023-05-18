@@ -1,0 +1,7 @@
+name: hion
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - json
+  - pymongo
