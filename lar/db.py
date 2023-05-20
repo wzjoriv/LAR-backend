@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 import pymongo as mg
 from pymongo.database import Database as mongo_Database
 import json, os
@@ -38,7 +38,7 @@ class Database():
 
         return database
 
-    def search(self, collection:str, key:str) -> List[dict]:
+    def search(self, collection:str, key:Union[str, tuple]) -> List[dict]:
         ## TODO
         """
         returns: 
@@ -55,7 +55,7 @@ class Database():
         Example:
             search("Hospitals", "City::Dallas")
         """
-        collection, key = (collection.upper(), key.upper())
+        collection, key = (collection.upper(), key.upper() if type(key) == str else key)
         query = self._key_filter(key)
 
         pass
