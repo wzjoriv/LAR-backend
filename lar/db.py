@@ -28,7 +28,7 @@ class Database():
 
                 for loc in fl_dt["features"]:
                     loc.pop("type")
-                    
+
                     if loc["properties"]["CITY"] != None:
                         loc["properties"]["CITY"] = loc["properties"]["CITY"].upper() 
 
@@ -68,6 +68,6 @@ class Database():
 
 
 if __name__ == "__main__":
-    dt = Database(data_path = "lar/data/")
+    dt = Database(host = "mongodb://localhost:27017/", data_path = "lar/data/")
     ## dt.search("Hospitals", "City::Dallas")
     del dt
