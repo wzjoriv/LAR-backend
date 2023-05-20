@@ -16,16 +16,20 @@ class Database():
         else:
             self.database = self.client["LAR"]
 
-    def _setup_mongodb(self, data_path:str = "lar-backend/data/") -> mongo_Database:
+    def _setup_mongodb(self, data_path:str = "lar/data/") -> mongo_Database:
 
         database = self.client["LAR"]
         for filename in os.listdir(data_path):
             if filename.endswith('.geojson'):
                 with open(os.path.join(data_path, filename)) as json_file:
-                    fl_dt = json.load(json_file)
+                    fl_dt = json.loads(json_file)
 
                 collection = database[fl_dt["name"].upper()]
-                collection.bulk_write(fl_dt["features"])
+
+                locs = fl_dt["features"]
+                for loc in locs:
+                    loc.pop("type")
+                collection.insert_many(fl_dt["features"])
 
         return database
 
@@ -57,5 +61,5 @@ class Database():
 
 
 if __name__ == "__main__":
-    dt = Database(data_path = "lar-backend/data/")
+    dt = Database(data_path = "lar/data/")
     ## dt.search("Hospitals", "City::Dallas")
