@@ -21,8 +21,8 @@ class Database():
         database = self.client["LAR"]
         for filename in os.listdir(data_path):
             if filename.endswith('.geojson'):
-                with open(os.path.join(data_path, filename)) as json_file:
-                    fl_dt = json.loads(json_file)
+                with open(os.path.join(data_path, filename), encoding='utf-8') as json_file:
+                    fl_dt = json.load(json_file)
 
                 collection = database[fl_dt["name"].upper()]
 
@@ -63,3 +63,4 @@ class Database():
 if __name__ == "__main__":
     dt = Database(data_path = "lar/data/")
     ## dt.search("Hospitals", "City::Dallas")
+    del dt
