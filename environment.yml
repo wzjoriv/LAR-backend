@@ -1,8 +1,9 @@
-name: hion
+name: lar
 channels:
-  - conda-forge
   - defaults
+  - conda-forge
 dependencies:
-  - json
   - pymongo
-  - osmnx
+  - pip
+  - pip:
+    - osmnx
