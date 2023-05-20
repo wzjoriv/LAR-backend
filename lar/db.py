@@ -39,6 +39,7 @@ class Database():
         return database
 
     def search(self, collection:str, key:str) -> List[dict]:
+        ## TODO
         """
         returns: 
             - list of geometry dict
