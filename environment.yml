@@ -1,0 +1,9 @@
+name: lar
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - pymongo
+  - pip
+  - pip:
+    - osmnx
