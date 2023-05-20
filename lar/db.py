@@ -26,10 +26,15 @@ class Database():
 
                 collection = database[fl_dt["name"].upper()]
 
-                locs = fl_dt["features"]
-                for loc in locs:
+                for loc in fl_dt["features"]:
                     loc.pop("type")
+                    
+                    if loc["properties"]["CITY"] != None:
+                        loc["properties"]["CITY"] = loc["properties"]["CITY"].upper() 
+
                 collection.insert_many(fl_dt["features"])
+                collection.create_index([("properties.CITY", mg.TEXT)])
+                collection.create_index([("geometry", mg.GEOSPHERE)])
 
         return database
 
@@ -38,17 +43,19 @@ class Database():
         returns: 
             - list of geometry dict
 
-        keys:
-            - State
+        keys options:
             - City
-            - Zip
-            - Zip4
+
+                Example: "City::Dallas"
+            - (Latitude, Longitude, Radius in meters)
+
+                Example: (12, 86, 123.4)
 
         Example:
-            search("Hospitals", "City::Dallas&&State::TX")
+            search("Hospitals", "City::Dallas")
         """
         collection, key = (collection.upper(), key.upper())
-        keys = self._key_filter(key)
+        query = self._key_filter(key)
 
         pass
 
