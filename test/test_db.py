@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath('..'))
 import lar
 
 ## Author: Josue N Rivera
+## Requires server to be ruuning first
 
 
 def test_access_db_with_data_path():
