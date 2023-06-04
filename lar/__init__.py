@@ -1,4 +1,4 @@
-from db import Database
+from .db import Database
 
 ## Author: Josue N Rivera
 

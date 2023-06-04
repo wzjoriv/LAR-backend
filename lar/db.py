@@ -24,7 +24,7 @@ class Database():
                 with open(os.path.join(data_path, filename), encoding='utf-8') as json_file:
                     fl_dt = json.load(json_file)
 
-                collection = database[fl_dt["name"].upper()]
+                collection = database[fl_dt["name"].replace("_", "").replace(" ", "").upper()]
 
                 for loc in fl_dt["features"]:
                     loc.pop("type")
@@ -37,9 +37,12 @@ class Database():
                 collection.create_index([("geometry", mg.GEOSPHERE)])
 
         return database
+    
+    def get_collections(self):
+
+        return self.database.collection_names()
 
     def search(self, collection:str, key:Union[str, tuple]) -> List[dict]:
-        ## TODO
         """
         returns: 
             - list of geometry dict
@@ -50,25 +53,34 @@ class Database():
                 Example: "City::Dallas"
             - (Latitude, Longitude, Radius in meters)
 
-                Example: (12, 86, 123.4)
+                Example: (-70.98471383, 41.672747140, 10000)
 
         Example:
             search("Hospitals", "City::Dallas")
         """
-        collection, key = (collection.upper(), key.upper() if type(key) == str else key)
-        query = self._key_filter(key)
+        collection = collection.upper()
+        key = key.replace("_", "").replace(" ", "").upper() if type(key) == str else key
 
-        pass
+        query = self._filter_key(key)
+        return list(self.database[collection].find(query, {"_id": False, "geometry":True}))
 
-    def _key_filter(self, key:str) -> dict:
+    def _filter_key(self, key:Union[str, tuple]) -> dict:
 
-        return {}
+        out = {}
+
+        if type(key) == str:
+            keys = key.upper().split("::")
+            out = {"properties."+keys[0]: keys[1]}
+        elif type(key) == tuple:
+            out = {"geometry": {"$near": { "$geometry": 
+                                          {"type": 'Point', "coordinates": [key[0], key[1]]}, "$maxDistance": key[2]}}}
+
+        return out
 
     def __del__(self) -> None:
         self.client.close()
 
-
 if __name__ == "__main__":
     dt = Database(host = "mongodb://localhost:27017/", data_path = "lar/data/")
-    ## dt.search("Hospitals", "City::Dallas")
+    dt.search("Hospitals", "City::Lafayette")
     del dt
