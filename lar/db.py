@@ -69,7 +69,8 @@ class Database():
         out = {}
 
         if type(key) == str:
-            out = {"properties.CITY": key.upper().split("::")[1]}
+            keys = key.upper().split("::")
+            out = {"properties."+keys[0]: keys[1]}
         elif type(key) == tuple:
             out = {"geometry": {"$near": { "$geometry": 
                                           {"type": 'Point', "coordinates": [key[0], key[1]]}, "$maxDistance": key[2]}}}
