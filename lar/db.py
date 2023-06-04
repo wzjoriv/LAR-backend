@@ -24,7 +24,7 @@ class Database():
                 with open(os.path.join(data_path, filename), encoding='utf-8') as json_file:
                     fl_dt = json.load(json_file)
 
-                collection = database[fl_dt["name"].upper()]
+                collection = database[fl_dt["name"].replace("_", "").replace(" ", "").upper()]
 
                 for loc in fl_dt["features"]:
                     loc.pop("type")
@@ -59,7 +59,7 @@ class Database():
             search("Hospitals", "City::Dallas")
         """
         collection = collection.upper()
-        key = key.upper() if type(key) == str else key
+        key = key.replace("_", "").replace(" ", "").upper() if type(key) == str else key
 
         query = self._filter_key(key)
         return list(self.database[collection].find(query, {"geometry":True}))
