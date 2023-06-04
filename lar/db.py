@@ -62,7 +62,7 @@ class Database():
         key = key.replace("_", "").replace(" ", "").upper() if type(key) == str else key
 
         query = self._filter_key(key)
-        return list(self.database[collection].find(query, {"geometry":True}))
+        return list(self.database[collection].find(query, {"_id": False, "geometry":True}))
 
     def _filter_key(self, key:Union[str, tuple]) -> dict:
 
