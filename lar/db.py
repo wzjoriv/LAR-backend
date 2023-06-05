@@ -2,7 +2,7 @@ from typing import List, Optional, Union
 import pymongo as mg
 from pymongo.database import Database as mongo_Database
 import json, os
-from utils import prune_str
+from .utils import prune_str
 
 ## Author(s): Josue N Rivera
 
