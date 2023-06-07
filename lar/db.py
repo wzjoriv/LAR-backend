@@ -2,8 +2,9 @@ from typing import List, Optional, Union
 import pymongo as mg
 from pymongo.database import Database as mongo_Database
 import json, os
+from .utils import prune_str
 
-## Author: Josue N Rivera
+## Author(s): Josue N Rivera
 
 class Database():
 
@@ -24,7 +25,7 @@ class Database():
                 with open(os.path.join(data_path, filename), encoding='utf-8') as json_file:
                     fl_dt = json.load(json_file)
 
-                collection = database[fl_dt["name"].replace("_", "").replace(" ", "").upper()]
+                collection = database[prune_str(fl_dt["name"])]
 
                 for loc in fl_dt["features"]:
                     loc.pop("type")
@@ -58,8 +59,8 @@ class Database():
         Example:
             search("Hospitals", "City::Dallas")
         """
-        collection = collection.upper()
-        key = key.replace("_", "").replace(" ", "").upper() if type(key) == str else key
+        collection = prune_str(collection)
+        key = prune_str(key) if type(key) == str else key
 
         query = self._filter_key(key)
         return list(self.database[collection].find(query, {"_id": False, "geometry":True}))

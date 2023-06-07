@@ -32,7 +32,3 @@ def test_all_collections():
     assert sorted(["HOSPITALS", "FIRESTATIONS", "PUBLICSCHOOLS", "LOCALLAWENFORCEMENT", "AVIATIONFACILITIES"]) \
             == sorted(dt.database.list_collection_names())
     del dt
-
-
-
-
