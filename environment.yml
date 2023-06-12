@@ -6,5 +6,6 @@ dependencies:
   - pymongo
   - pip
   - pytest
+  - flask
   - pip:
     - osmnx
