@@ -1,6 +1,7 @@
 from lar import Database
-from lar.utils import prune_str_list
+from lar.utils import prune_str_list, add_to_loc
 from flask import Flask, jsonify
+from urllib.parse import unquote
 
 ## Author(s): Josue N Rivera
 
@@ -20,6 +21,21 @@ def test(lat:str):
 def locs(lat: str, lon: str, radius: str, dbs: str):
 
     lat, lon, radius = (float(lat), float(lon), float(radius))
+
+    collections = prune_str_list(dbs.split(","))
+    collections = ["Hospitals"] if not len(collections) else sorted(collections)
+    
+    results = {}
+    
+    for col in collections:
+        results[col] = dt.search(col, (lat, lon, radius))
+
+    return jsonify(results)
+
+@app.route('/adds/<adds>/<dbs>', methods=['GET'])
+def adds(adds: str, dbs: str):
+
+    lat, lon, radius = add_to_loc(str(unquote(adds)))
 
     collections = prune_str_list(dbs.split(","))
     collections = ["Hospitals"] if not len(collections) else sorted(collections)
