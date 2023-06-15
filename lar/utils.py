@@ -2,8 +2,16 @@ from typing import List, Tuple
 import osmnx as ox
 from pyproj import Geod
 from shapely import Point
+import json
 
 ## Author(s): Josue N Rivera
+
+with open("config.json") as f:
+    __config = json.load(f)
+    _database_name = __config.names
+
+def to_db_names(db_codes: List[int]) -> List[str]:
+    return [_database_name[i] for i in db_codes]
 
 def prune_str(text: str) -> str:
     return  text.replace("_", "").replace(" ", "").upper()
