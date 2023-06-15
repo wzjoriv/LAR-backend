@@ -5,7 +5,7 @@ import json
 
 __all__ = ["Database"]
 
-with open("config.json") as f:
+with open("lar/config.json") as f:
     database_name = json.load(f)["db_names"]
 
 MAX_SEARCH_RADIUS = 50000 #meters

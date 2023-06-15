@@ -6,9 +6,9 @@ import json
 
 ## Author(s): Josue N Rivera
 
-with open("config.json") as f:
+with open("lar/config.json") as f:
     __config = json.load(f)
-    _database_name = __config.names
+    _database_name = __config["db_names"]
 
 def to_db_names(db_codes: List[int]) -> List[str]:
     return [_database_name[i] for i in db_codes]
