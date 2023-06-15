@@ -17,9 +17,9 @@ def add_to_loc(adds: str) -> Tuple[float]:
     area = polygon.geometry.iloc[0]
 
     point = area.centroid
-    rectangle = polygon.minimum_rotated_rectan
+    rectangle = area.minimum_rotated_rectangle
 
     corner = rectangle.exterior.coords[0]
-    _, __, radius = Geod(ellps=area.crs.name).inv(point.x, point.y, corner[0], corner[1])
+    _, __, radius = Geod(ellps=polygon.crs.name.replace(" ", "")).inv(point.x, point.y, corner[0], corner[1])
 
     return (point.x, point.y, radius)
