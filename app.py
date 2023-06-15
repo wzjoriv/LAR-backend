@@ -24,7 +24,7 @@ def adds(adds: str, dbs: str):
     lat, lon, radius = add_to_loc(str(unquote(adds)))
     radius = np.clip(radius, 0, MAX_SEARCH_RADIUS)
 
-    collections = to_db_names([int(i) for i in dbs.split(",")])
+    collections = to_db_names([int(i) for i in unquote(dbs).split(",")])
     collections = prune_str_list(collections)
     collections = ["Hospitals"] if not len(collections) else sorted(collections)
     
@@ -38,9 +38,9 @@ def adds(adds: str, dbs: str):
 @app.route('/locs/<lat>,<lon>,<radius>/<dbs>', methods=['GET'])
 def locs(lat: str, lon: str, radius: str, dbs: str):
 
-    lat, lon, radius = (float(lat), float(lon), float(radius))
+    lat, lon, radius = (float(unquote(lat)), float(unquote(lon)), float(unquote(radius)))
 
-    collections = to_db_names([int(i) for i in dbs.split(",")])
+    collections = to_db_names([int(i) for i in unquote(dbs).split(",")])
     collections = prune_str_list(collections)
     collections = ["Hospitals"] if not len(collections) else sorted(collections)
     
