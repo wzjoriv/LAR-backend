@@ -1,5 +1,5 @@
 import numpy as np
-from lar import Database, MAX_SEARCH_RADIUS
+from lar import Database, MIN_SEARCH_RADIUS, MAX_SEARCH_RADIUS
 from lar.utils import prune_str_list, add_to_loc, to_db_names
 from flask import Flask, jsonify
 from urllib.parse import unquote
@@ -22,7 +22,7 @@ def test(lat:str):
 def adds(adds: str, dbs: str):
 
     lat, lon, radius = add_to_loc(str(unquote(adds)))
-    radius = np.clip(radius, 0, MAX_SEARCH_RADIUS)
+    radius = np.clip(radius, MIN_SEARCH_RADIUS, MAX_SEARCH_RADIUS)
 
     collections = to_db_names([int(i) for i in unquote(dbs).split(",")])
     collections = prune_str_list(collections)
@@ -39,6 +39,7 @@ def adds(adds: str, dbs: str):
 def locs(lat: str, lon: str, radius: str, dbs: str):
 
     lat, lon, radius = (float(unquote(lat)), float(unquote(lon)), float(unquote(radius)))
+    radius = np.clip(radius, MIN_SEARCH_RADIUS, MAX_SEARCH_RADIUS)
 
     collections = to_db_names([int(i) for i in unquote(dbs).split(",")])
     collections = prune_str_list(collections)
