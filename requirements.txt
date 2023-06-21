@@ -2,3 +2,4 @@ pymongo
 osmnx
 flask
 chardet
+pytest
