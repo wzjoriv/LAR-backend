@@ -1,5 +1,7 @@
 pymongo
 osmnx
 flask
+flask-cors
 chardet
 pytest
+venv
