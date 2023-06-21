@@ -2,30 +2,43 @@ from typing import List, Optional, Union
 import pymongo as mg
 from pymongo.database import Database as mongo_Database
 import json, os
-from .utils import prune_str
+from .utils import prune_str, download_dataset
 
 ## Author(s): Josue N Rivera
 
 class Database():
 
-    def __init__(self, host:str = "mongodb://localhost:27017/", data_path:Optional[str] = None) -> None:
+    def __init__(self, config, host:str = "mongodb://localhost:27017/") -> None:
         self.host = host
         self.client = mg.MongoClient(self.host)
+        self.id_to_collection = {}
 
-        if type(data_path) != type(None) and "LAR" not in self.client.list_database_names():
-            self.database = self._setup_mongodb(data_path)
+        if "LAR" not in self.client.list_database_names():
+            self.database = self._setup_mongodb(config)
         else:
             self.database = self.client["LAR"]
+            
+        for col_name, pack in config["dbs"].items():
+            self.id_to_collection[pack["backend_id"]] = prune_str(col_name)
 
-    def _setup_mongodb(self, data_path:str = "lar/data/") -> mongo_Database:
+    def _setup_mongodb(self, config:dict) -> mongo_Database:
+
+        data_path = config["data path"]
+
+        if not os.path.isdir(data_path):
+            os.makedirs(data_path)
+
+            for name, id, dataset in [(db_name, pack["backend_id"], pack["url_id"]) for db_name, pack in config["dbs"].items()]:
+                download_dataset(os.path.join(data_path, f"{name}_{id}.geojson"), dataset)        
 
         database = self.client["LAR"]
         for filename in os.listdir(data_path):
             if filename.endswith('.geojson'):
                 with open(os.path.join(data_path, filename), encoding='utf-8') as json_file:
                     fl_dt = json.load(json_file)
-
-                collection = database[prune_str(fl_dt["name"])]
+                
+                pr_name = prune_str(filename.split('_')[0])
+                collection = database[pr_name]
 
                 for loc in fl_dt["features"]:
                     loc.pop("type")
@@ -52,9 +65,9 @@ class Database():
             - City
 
                 Example: "City::Dallas"
-            - (Latitude, Longitude, Radius in meters)
+            - (Longitude, Latitude, Radius in meters)
 
-                Example: (-70.98471383, 41.672747140, 10000)
+                Example: (41.672747140, -70.98471383, 10000)
 
         Example:
             search("Hospitals", "City::Dallas")
