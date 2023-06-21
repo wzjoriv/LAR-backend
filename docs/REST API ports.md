@@ -23,7 +23,7 @@ Here are some example endpoints for our API:
 - `GET /locs/:lat,:lon,:radius/:dbs`: Returns location data based on the provided latitude, longitude, radius, and database collections.
 
 ## Request Parameters
-The `dbs` parameter in both `/adds/:adds/:dbs` and `/locs/:lat,:lon,:radius/:dbs` endpoints represents a comma-separated list of integers representing database collections. These integers correspond to indices in the following list of database names: `["Aviation Facilities", "Fire Stations", "Hospitals", "Local Law Enforcement", "Schools"]`. For example, a `dbs` value of `"1,2,4"` would correspond to the collections `"Fire Stations"`, `"Hospitals"`, and `"Schools"`.
+The `dbs` parameter in both `/adds/:adds/:dbs` and `/locs/:lat,:lon,:radius/:dbs` endpoints represents a comma-separated list of integers representing database collections. These integers correspond to unique private IDs for a list of databases. For example, a `dbs` value of `"1,2,4"` would correspond to the collections `"Fire Stations"`, `"Hospitals"`, and `"Schools"`. To learn more, visit the [database directory](../config.json).
 
 ## Request and Response Format
 All requests and responses are in JSON format. Here's an example request to get location data:

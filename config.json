@@ -1,0 +1,33 @@
+{
+    "data path": "lar/data/",
+    "host": {
+        "mongodb": "localhost",
+        "backend": "localhost"
+    },
+    "port": {
+        "mongodb": 27017,
+        "backend": 5000
+    },
+    "dbs": {
+        "Aviation Facilities": {
+            "backend_id": "0",
+            "url_id": "e6fe35a5120a446a87898c30b6b01bef_0"
+        },
+        "Fire Stations": {
+            "backend_id": "1",
+            "url_id": "0ccaf0c53b794eb8ac3d3de6afdb3286_0"
+        },
+        "Hospitals": {
+            "backend_id": "2",
+            "url_id": "75079bdea94743bcaca7b6e833692639_0"
+        },
+        "Local Law Enforcement": {
+            "backend_id": "3",
+            "url_id": "0d79b978d71b4654bddb6ca0f4b7f830_0"
+        },
+        "Public Schools": {
+            "backend_id": "4",
+            "url_id": "87376bdb0cb3490cbda39935626f6604_0"
+        }
+    }
+}
