@@ -3,10 +3,13 @@ from lar import Database, MIN_SEARCH_RADIUS, MAX_SEARCH_RADIUS
 from lar.utils import prune_str_list, add_to_loc, to_db_names
 from flask import Flask, jsonify
 from urllib.parse import unquote
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
 
 ## Author(s): Josue N Rivera
 
-app = Flask(__name__)
 dt = Database(host = "mongodb://localhost:27017/", data_path="lar/data/")
 
 @app.route('/')
