@@ -37,10 +37,13 @@ def adds(adds: str, dbs: str):
     collections = to_db_names([prune_str(i) for i in unquote(dbs).split(",")], dt.id_to_collection)
     collections = ["Hospitals"] if not len(collections) else sorted(collections)
     
-    results = {}
+    results = {"search": {
+        "longitude": lon, "latitude": lat, "radius": radius
+    },
+    "dbs": {}}
     
     for col in collections:
-        results[col] = dt.search(col, (lon, lat, radius))
+        results["dbs"][col] = dt.search(col, (lon, lat, radius))
 
     return jsonify(results)
 
@@ -53,10 +56,13 @@ def locs(lat: str, lon: str, radius: str, dbs: str):
     collections = to_db_names([prune_str(i) for i in unquote(dbs).split(",")], dt.id_to_collection)
     collections = ["Hospitals"] if not len(collections) else sorted(collections)
     
-    results = {}
+    results = {"search": {
+        "longitude": lon, "latitude": lat, "radius": radius
+    },
+    "dbs": {}}
     
     for col in collections:
-        results[col] = dt.search(col, (lon, lat, radius))
+        results["dbs"][col] = dt.search(col, (lon, lat, radius))
 
     return jsonify(results)
 
