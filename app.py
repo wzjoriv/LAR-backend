@@ -20,10 +20,13 @@ dt = Database( config=config, host = f"mongodb://{config['host']['mongodb']}:{co
 def index():
     return jsonify("It works!")
 
-@app.route('/test/<lat>', methods=['GET'])
-def test(lat:str):
-    lat = float(lat)
-    return jsonify("It works! " + str(lat) + " " + str(type(lat) == float))
+@app.route('/test/<adds>', methods=['GET'])
+def test(adds:str):
+    
+    lon, lat, radius = add_to_loc(str(unquote(adds)))
+    radius = np.clip(radius, MIN_SEARCH_RADIUS, MAX_SEARCH_RADIUS)
+
+    return jsonify({"longitude": lon, "latitude": lat, "radius": radius})
 
 @app.route('/adds/<adds>/<dbs>', methods=['GET'])
 def adds(adds: str, dbs: str):
@@ -34,10 +37,13 @@ def adds(adds: str, dbs: str):
     collections = to_db_names([prune_str(i) for i in unquote(dbs).split(",")], dt.id_to_collection)
     collections = ["Hospitals"] if not len(collections) else sorted(collections)
     
-    results = {}
+    results = {"search": {
+        "longitude": lon, "latitude": lat, "radius": radius
+    },
+    "dbs": {}}
     
     for col in collections:
-        results[col] = dt.search(col, (lon, lat, radius))
+        results["dbs"][col] = dt.search(col, (lon, lat, radius))
 
     return jsonify(results)
 
@@ -50,10 +56,13 @@ def locs(lat: str, lon: str, radius: str, dbs: str):
     collections = to_db_names([prune_str(i) for i in unquote(dbs).split(",")], dt.id_to_collection)
     collections = ["Hospitals"] if not len(collections) else sorted(collections)
     
-    results = {}
+    results = {"search": {
+        "longitude": lon, "latitude": lat, "radius": radius
+    },
+    "dbs": {}}
     
     for col in collections:
-        results[col] = dt.search(col, (lon, lat, radius))
+        results["dbs"][col] = dt.search(col, (lon, lat, radius))
 
     return jsonify(results)
 
