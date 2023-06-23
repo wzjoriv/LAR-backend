@@ -42,10 +42,10 @@ It is expected that all shell commands are executed from the root directory of t
     **Option 1:** venv
 
     ```bash
-    python3 -m venv .venv
+    python -m venv .venv
 
     source .venv/bin/activate # macOS/Linux
-    .\env\Scripts\activate # Windows
+    .venv\Scripts\activate.ps # Windows
 
     pip install -r requirements.txt
     ```
