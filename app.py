@@ -20,10 +20,13 @@ dt = Database( config=config, host = f"mongodb://{config['host']['mongodb']}:{co
 def index():
     return jsonify("It works!")
 
-@app.route('/test/<lat>', methods=['GET'])
-def test(lat:str):
-    lat = float(lat)
-    return jsonify("It works! " + str(lat) + " " + str(type(lat) == float))
+@app.route('/test/<adds>', methods=['GET'])
+def test(adds:str):
+    
+    lon, lat, radius = add_to_loc(str(unquote(adds)))
+    radius = np.clip(radius, MIN_SEARCH_RADIUS, MAX_SEARCH_RADIUS)
+
+    return jsonify({"longitude": lon, "latitude": lat, "radius": radius})
 
 @app.route('/adds/<adds>/<dbs>', methods=['GET'])
 def adds(adds: str, dbs: str):
