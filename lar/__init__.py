@@ -7,4 +7,4 @@ __all__ = ["Database"]
 
 
 MIN_SEARCH_RADIUS = 1500 #meters
-MAX_SEARCH_RADIUS = 50000 #meters
+MAX_SEARCH_RADIUS = 500000 #meters
