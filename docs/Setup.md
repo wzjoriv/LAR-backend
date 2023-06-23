@@ -45,7 +45,8 @@ It is expected that all shell commands are executed from the root directory of t
     python -m venv .venv
 
     source .venv/bin/activate # macOS/Linux
-    .venv\Scripts\activate.ps # Windows
+    .venv\Scripts\Activate.ps1 # Windows PS
+    .venv\Scripts\activate.bat # Windows CMD
 
     pip install -r requirements.txt
     ```
